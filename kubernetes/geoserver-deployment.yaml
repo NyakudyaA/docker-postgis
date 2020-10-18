@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geoserver-deploy
+  labels:
+    name: geoserver-pod
+    app: geoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: geoserver-pod
+      app: geoserver
+  template:
+    metadata:
+      name: geoserver-pod
+      labels:
+        name: geoserver-pod
+        app: geoserver
+    spec:
+      containers:
+        - name: docker-geoserver
+          image: kartoza/geoserver:2.18.0
+          env:
+            - name: ENABLE_JSONP
+              value: "true"
+            - name: FOOTPRINTS_DATA_DIR
+              value: "/opt/footprints_dir"
+            - name: GEOSERVER_ADMIN_PASSWORD
+              value: "myawesomegeoserver"
+            - name: GEOSERVER_ADMIN_USER
+              value: "admin"
+            - name: GEOSERVER_CSRF_DISABLED
+              value: "true"
+            - name: GEOSERVER_DATA_DIR
+              value: "/opt/geoserver/data_dir"
+            - name: GEOWEBCACHE_CACHE_DIR
+              value: "/opt/geoserver/data_dir/gwc"
+            - name: INITIAL_MEMORY
+              value: "2G"
+            - name: MAXIMUM_MEMORY
+              value: "4G"
+            - name: MAX_FILTER_RULES
+              value: "20"
+            - name: OPTIMIZE_LINE_WIDTH
+              value: "false"
+            - name: SAMPLE_DATA
+              value: "false"
+            - name: XFRAME_OPTIONS
+              value: "false"
+          ports:
+            - containerPort: 8080
+
+
